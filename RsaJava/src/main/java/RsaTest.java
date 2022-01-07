@@ -21,7 +21,7 @@ public class RsaTest {
         //genKeys();
         loadKeys();
 
-        byte[] input = "abc".getBytes();
+        byte[] input = "THIS IS TEST TEXT".getBytes();
 
         Cipher cipher;
 
@@ -35,6 +35,7 @@ public class RsaTest {
 
         byte[] cipherText = cipher.doFinal(input);
         System.out.println("cipher: len=" + cipherText.length); //new String(cipherText));
+        System.out.println("cipher(base64): " + Base64.encode(cipherText));
 
         // Decrypt
         cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-512AndMGF1Padding");
