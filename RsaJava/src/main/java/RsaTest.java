@@ -37,7 +37,7 @@ public class RsaTest {
     }
 
     private void test2() throws Exception {
-        byte[] cipher = Base64.decode(Data.cipherText);
+        byte[] cipher = Base64.decode(Data.cipherTextOAEPSHA512);
         byte[] plain = decrypt(cipher, MGF1ParameterSpec.SHA512);
         System.out.println("test2: " + plain);
     }
