@@ -11,7 +11,7 @@ class iosRsaTests: XCTestCase {
     func testRsa() throws {
         let pubKey = getPubKey()
 
-        let message = "Hello from iOS".data(using: .utf8)!
+        let message = "Hello from iOS, This is test text".data(using: .utf8)!
 
         var error: Unmanaged<CFError>?
         guard let cipher = SecKeyCreateEncryptedData(pubKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA512, message as CFData, &error) else {
@@ -19,7 +19,8 @@ class iosRsaTests: XCTestCase {
         }
 
         let data = cipher as Data
-        print("cipherText(base64): " + data.base64EncodedString())
+        let b64 = data.base64EncodedString()
+        print("cipherText(base64): " + b64)
     }
 
     func getPubKey() -> SecKey {

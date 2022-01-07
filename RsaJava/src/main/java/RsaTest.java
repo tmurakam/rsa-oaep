@@ -27,18 +27,18 @@ public class RsaTest {
         String input = "THIS IS TEST TEXT";
 
         // encrypt
-        byte[] cipherText = encrypt(input);
+        byte[] cipherText = encrypt(input, MGF1ParameterSpec.SHA512);
         System.out.println("cipher: len=" + cipherText.length); //new String(cipherText));
         System.out.println("cipher(base64): " + Base64.encode(cipherText));
 
         // Decrypt
-        byte[] plain = decrypt(cipherText);
+        byte[] plain = decrypt(cipherText, MGF1ParameterSpec.SHA512);
         System.out.println("plain : " + new String(plain));
     }
 
     private void test2() throws Exception {
-        
-        byte[] plain = decrypt(Base64.decode(Data.cipherText), MGF1ParameterSpec.SHA512);
+        byte[] cipher = Base64.decode(Data.cipherText);
+        byte[] plain = decrypt(cipher, MGF1ParameterSpec.SHA512);
         System.out.println("test2: " + plain);
     }
 
@@ -46,9 +46,14 @@ public class RsaTest {
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-512AndMGF1Padding");
         cipher.init(Cipher.ENCRYPT_MODE, pubKey);
 
-        
-        byte[] cipherText = cipher.doFinal(plain.getBytes());
-        return cipherText;
+        return cipher.doFinal(plain.getBytes());
+    }
+
+    private byte[] encrypt(String plain, MGF1ParameterSpec mgf1Spec) throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPPadding");
+        cipher.init(Cipher.ENCRYPT_MODE, pubKey, new OAEPParameterSpec("SHA-512", "MGF1", mgf1Spec, PSource.PSpecified.DEFAULT));
+
+        return cipher.doFinal(plain.getBytes());
     }
 
     private byte[] decrypt(byte[] cipherText) throws Exception {
