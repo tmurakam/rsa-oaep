@@ -1,5 +1,12 @@
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import sun.rmi.rmic.iiop.ClassPathLoader;
+
+import java.nio.charset.StandardCharsets;
 import java.security.*;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.MGF1ParameterSpec;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.OAEPParameterSpec;
@@ -11,7 +18,8 @@ public class RsaTest {
     private Key pubKey;
 
     public void run() throws Exception {
-        genKeys();
+        //genKeys();
+        loadKeys();
 
         byte[] input = "abc".getBytes();
 
@@ -35,11 +43,15 @@ public class RsaTest {
         System.out.println("plain : " + new String(plainText));
     }
 
-    private void loadKeys() {
+    private void loadKeys() throws NoSuchAlgorithmException, InvalidKeySpecException {
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+        
+        X509EncodedKeySpec xs = new X509EncodedKeySpec(Base64.decode(Keys.pubkey));
+        pubKey = kf.generatePublic(xs);
 
+        PKCS8EncodedKeySpec ps = new PKCS8EncodedKeySpec(Base64.decode(Keys.privkey));
+        privKey = kf.generatePrivate(ps);
     }
-
-
 
     private void genKeys() throws NoSuchAlgorithmException {
         // Generate Keys
