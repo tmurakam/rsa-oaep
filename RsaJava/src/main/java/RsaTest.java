@@ -19,6 +19,7 @@ public class RsaTest {
 
         test1();
         test2();
+        test3();
     }
 
     private void test1() throws Exception {
@@ -37,9 +38,17 @@ public class RsaTest {
     }
 
     private void test2() throws Exception {
-        byte[] cipher = Base64.decode(Data.cipherTextOAEPSHA512);
-        byte[] plain = decrypt(cipher, MGF1ParameterSpec.SHA512);
+        byte[] cipherText = Base64.decode(Data.cipherTextOAEPSHA512);
+        byte[] plain = decrypt(cipherText, MGF1ParameterSpec.SHA512);
+
         System.out.println("test2: " + plain);
+    }
+
+    private void test3() throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        cipher.init(Cipher.DECRYPT_MODE, privKey);
+        byte[] plain = cipher.doFinal(Base64.decode(Data.cipherTextPKCS1));
+        System.out.println("test3: " + plain);
     }
 
     private byte[] encrypt(String plain) throws Exception {
