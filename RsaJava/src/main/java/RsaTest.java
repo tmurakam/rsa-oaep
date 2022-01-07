@@ -15,7 +15,13 @@ public class RsaTest {
     private Key pubKey;
 
     public void run() throws Exception {
-        //genKeys();
+        loadKeys();
+
+        test1();
+        test2();
+    }
+
+    private void test1() throws Exception {
         loadKeys();
 
         String input = "THIS IS TEST TEXT";
@@ -30,11 +36,17 @@ public class RsaTest {
         System.out.println("plain : " + new String(plain));
     }
 
-    private byte[] encrypt(String plain) throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPPadding");
-        cipher.init(Cipher.ENCRYPT_MODE, pubKey,
-                new OAEPParameterSpec("SHA-512", "MGF1", MGF1ParameterSpec.SHA1, PSource.PSpecified.DEFAULT));
+    private void test2() throws Exception {
+        
+        byte[] plain = decrypt(Base64.decode(Data.cipherText), MGF1ParameterSpec.SHA512);
+        System.out.println("test2: " + plain);
+    }
 
+    private byte[] encrypt(String plain) throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-512AndMGF1Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, pubKey);
+
+        
         byte[] cipherText = cipher.doFinal(plain.getBytes());
         return cipherText;
     }
@@ -42,8 +54,15 @@ public class RsaTest {
     private byte[] decrypt(byte[] cipherText) throws Exception {
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-512AndMGF1Padding");
         cipher.init(Cipher.DECRYPT_MODE, privKey);
-        byte[] plainText = cipher.doFinal(cipherText);
-        return plainText;
+
+        return cipher.doFinal(cipherText);
+    }
+
+    private byte[] decrypt(byte[] cipherText, MGF1ParameterSpec mgf1Spec) throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPPadding");
+        cipher.init(Cipher.DECRYPT_MODE, privKey, new OAEPParameterSpec("SHA-512", "MGF1", mgf1Spec, PSource.PSpecified.DEFAULT));
+
+        return cipher.doFinal(cipherText);
     }
 
     private void loadKeys() throws NoSuchAlgorithmException, InvalidKeySpecException {
