@@ -19,7 +19,7 @@ class iosRsaTests: XCTestCase {
         }
 
         let data = cipher as Data
-        print(data.base64EncodedString())
+        print("cipherText(base64): " + data.base64EncodedString())
     }
 
     func getPubKey() -> SecKey {
