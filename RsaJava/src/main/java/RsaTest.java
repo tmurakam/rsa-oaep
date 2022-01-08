@@ -17,12 +17,12 @@ public class RsaTest {
     public void run() throws Exception {
         loadKeys();
 
-        test1();
-        test2();
-        test3();
+        testEncryptDecrypt();
+        testDecryptIosRSAOAEPSHA512();
+        testDecryptIosRSAPKCS1();
     }
 
-    private void test1() throws Exception {
+    private void testEncryptDecrypt() throws Exception {
         loadKeys();
 
         String input = "THIS IS TEST TEXT";
@@ -37,14 +37,14 @@ public class RsaTest {
         System.out.println("plain : " + new String(plain));
     }
 
-    private void test2() throws Exception {
+    private void testDecryptIosRSAOAEPSHA512() throws Exception {
         byte[] cipherText = Base64.decode(Data.cipherTextOAEPSHA512);
         byte[] plain = decrypt(cipherText, MGF1ParameterSpec.SHA512);
 
         System.out.println("test2: " + new String(plain));
     }
 
-    private void test3() throws Exception {
+    private void testDecryptIosRSAPKCS1() throws Exception {
         Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         cipher.init(Cipher.DECRYPT_MODE, privKey);
         byte[] plain = cipher.doFinal(Base64.decode(Data.cipherTextPKCS1));
