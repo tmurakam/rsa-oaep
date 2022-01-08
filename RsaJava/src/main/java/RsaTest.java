@@ -41,14 +41,14 @@ public class RsaTest {
         byte[] cipherText = Base64.decode(Data.cipherTextOAEPSHA512);
         byte[] plain = decrypt(cipherText, MGF1ParameterSpec.SHA512);
 
-        System.out.println("test2: " + plain);
+        System.out.println("test2: " + new String(plain));
     }
 
     private void test3() throws Exception {
         Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         cipher.init(Cipher.DECRYPT_MODE, privKey);
         byte[] plain = cipher.doFinal(Base64.decode(Data.cipherTextPKCS1));
-        System.out.println("test3: " + plain);
+        System.out.println("test3: " + new String(plain));
     }
 
     private byte[] encrypt(String plain) throws Exception {
