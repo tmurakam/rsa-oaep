@@ -221,7 +221,7 @@ public class RsaOAEPPadding {
         }
     }
 
-    private func dataToString(data: Data) -> String {
+    public static func dataToString(data: Data) -> String {
         data.map { String(format: "%02x", $0) }.joined()
     }
 }
