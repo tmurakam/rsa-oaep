@@ -12,6 +12,8 @@
 		3E7E34A627889F8D00EC4F38 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E7E34A527889F8D00EC4F38 /* Assets.xcassets */; };
 		3E7E34A927889F8D00EC4F38 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E7E34A827889F8D00EC4F38 /* Preview Assets.xcassets */; };
 		3E7E34B327889F8D00EC4F38 /* iosRsaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7E34B227889F8D00EC4F38 /* iosRsaTests.swift */; };
+		662AB29E5ADC5E9B499589CB /* RsaOaepPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662ABF006DCE7FACC31003DF /* RsaOaepPadding.swift */; };
+		662AB59EE2D5B5EF0E634FD3 /* RsaOaepPaddingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662AB9105AA0A1BF6E1E798A /* RsaOaepPaddingTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,8 @@
 		3E7E34AE27889F8D00EC4F38 /* iosRsaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iosRsaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E7E34B227889F8D00EC4F38 /* iosRsaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosRsaTests.swift; sourceTree = "<group>"; };
 		3E7E34B827889F8D00EC4F38 /* iosRsaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iosRsaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		662AB9105AA0A1BF6E1E798A /* RsaOaepPaddingTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RsaOaepPaddingTest.swift; sourceTree = "<group>"; };
+		662ABF006DCE7FACC31003DF /* RsaOaepPadding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RsaOaepPadding.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +97,7 @@
 				3E7E34A327889F8C00EC4F38 /* ContentView.swift */,
 				3E7E34A527889F8D00EC4F38 /* Assets.xcassets */,
 				3E7E34A727889F8D00EC4F38 /* Preview Content */,
+				662ABF006DCE7FACC31003DF /* RsaOaepPadding.swift */,
 			);
 			path = iosRsa;
 			sourceTree = "<group>";
@@ -109,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				3E7E34B227889F8D00EC4F38 /* iosRsaTests.swift */,
+				662AB9105AA0A1BF6E1E798A /* RsaOaepPaddingTest.swift */,
 			);
 			path = iosRsaTests;
 			sourceTree = "<group>";
@@ -245,6 +251,7 @@
 			files = (
 				3E7E34A427889F8C00EC4F38 /* ContentView.swift in Sources */,
 				3E7E34A227889F8C00EC4F38 /* iosRsaApp.swift in Sources */,
+				662AB29E5ADC5E9B499589CB /* RsaOaepPadding.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,6 +260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E7E34B327889F8D00EC4F38 /* iosRsaTests.swift in Sources */,
+				662AB59EE2D5B5EF0E634FD3 /* RsaOaepPaddingTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
