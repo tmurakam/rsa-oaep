@@ -105,6 +105,7 @@ public class RsaOAEPPadding {
     func unpad(padded: Data) throws -> Data {
         let blockSize = padded.count
         let hashLen = mainDigest.length
+        //print("block = \(dataToString(data: padded))")
 
         // check first byte is 0?
         guard padded[0] == 0x0 else {
@@ -119,15 +120,18 @@ public class RsaOAEPPadding {
         // Get seed and db
         let maskedSeed = padded.subdata(in: 1..<1+hashLen)
         let maskedDb = padded.subdata(in: 1+hashLen..<padded.count)
-        //print("seed = \(dataToString(data: seed))")
-        //print("db = \(dataToString(data: db))")
+        //print("maskedSeed = \(dataToString(data: maskedSeed))")
+        //print("maskedDb = \(dataToString(data: maskedDb))")
 
         // MGF1
         let seed = xor(data: maskedSeed, mask: mgf1(maskLength: maskedSeed.count, seed: maskedDb))
         let db = xor(data: maskedDb, mask: mgf1(maskLength: maskedDb.count, seed: seed))
+        //print("seed = \(dataToString(data: seed))")
+        //print("db = \(dataToString(data: db))")
 
         // Check lHash
         let lHash = hash(data: Data()/*empty*/, hash: mainDigest)
+        //print("lHash = \(dataToString(data: lHash))")
         guard db[0..<hashLen] == lHash else {
             throw OAEPError.badPadding
         }
@@ -170,17 +174,18 @@ public class RsaOAEPPadding {
         var remain = maskLength
 
         var temp = Data()
-        temp.append(0x0)
-        temp.append(0x0)
-        temp.append(0x0)
-        temp.append(0x0)
         temp.append(seed)
+        temp.append(0x0)
+        temp.append(0x0)
+        temp.append(0x0)
+        temp.append(0x0)
+        let counterOffset = seed.count
 
         while (remain > 0) {
-            temp[0] = (UInt8)((counter >> 24) & 0xff)
-            temp[1] = (UInt8)((counter >> 16) & 0xff)
-            temp[2] = (UInt8)((counter >> 8) & 0xff)
-            temp[3] = (UInt8)(counter & 0xff)
+            temp[counterOffset + 0] = (UInt8)((counter >> 24) & 0xff)
+            temp[counterOffset + 1] = (UInt8)((counter >> 16) & 0xff)
+            temp[counterOffset + 2] = (UInt8)((counter >> 8) & 0xff)
+            temp[counterOffset + 3] = (UInt8)(counter & 0xff)
 
             var h = hash(data: temp, hash: mgf1Digest)
 
