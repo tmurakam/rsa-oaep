@@ -6,7 +6,7 @@ import Foundation
 import CryptoKit
 
 public enum OAEPDigest {
-    case SHA1, SHA256, SHA512
+    case SHA1, SHA256, SHA384, SHA512
 
     var length: Int {
         switch self {
@@ -14,6 +14,8 @@ public enum OAEPDigest {
             return 160 / 8
         case .SHA256:
             return 256 / 8
+        case .SHA384:
+            return 384 / 8
         case .SHA512:
              return 512 / 8
         }
@@ -216,6 +218,8 @@ public class RsaOAEPPadding {
             return Data(Insecure.SHA1.hash(data: data))
         case .SHA256:
             return Data(SHA256.hash(data: data))
+        case .SHA384:
+            return Data(SHA384.hash(data: data))
         case .SHA512:
             return Data(SHA512.hash(data: data))
         }
