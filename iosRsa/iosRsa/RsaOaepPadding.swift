@@ -81,16 +81,16 @@ public class RsaOAEPPadding {
         //print("seed: \(dataToString(data: seed))")
 
         // MGF1
-        db = xor(data: db, mask: mgf1(maskLength: db.count, seed: seed))
-        seed = xor(data: seed, mask: mgf1(maskLength: seed.count, seed: db))
+        let maskedDb = xor(data: db, mask: mgf1(maskLength: db.count, seed: seed))
+        let maskedSeed = xor(data: seed, mask: mgf1(maskLength: seed.count, seed: maskedDb))
 
         //print("db: \(dataToString(data: db))")
         //print("seed: \(dataToString(data: seed))")
 
         var padded = Data()
         padded.append(0x0)
-        padded.append(seed)
-        padded.append(db)
+        padded.append(maskedSeed)
+        padded.append(maskedDb)
         return padded
     }
 
@@ -117,14 +117,14 @@ public class RsaOAEPPadding {
         }
 
         // Get seed and db
-        var seed = padded.subdata(in: 1..<1+hashLen)
-        var db = padded.subdata(in: 1+hashLen..<padded.count)
+        let maskedSeed = padded.subdata(in: 1..<1+hashLen)
+        let maskedDb = padded.subdata(in: 1+hashLen..<padded.count)
         //print("seed = \(dataToString(data: seed))")
         //print("db = \(dataToString(data: db))")
 
         // MGF1
-        seed = xor(data: seed, mask: mgf1(maskLength: seed.count, seed: db))
-        db = xor(data: db, mask: mgf1(maskLength: db.count, seed: seed))
+        let seed = xor(data: maskedSeed, mask: mgf1(maskLength: maskedSeed.count, seed: maskedDb))
+        let db = xor(data: maskedDb, mask: mgf1(maskLength: maskedDb.count, seed: seed))
 
         // Check lHash
         let lHash = hash(data: Data()/*empty*/, hash: mainDigest)
@@ -133,11 +133,11 @@ public class RsaOAEPPadding {
         }
 
         // Remove lHash
-        db = Data(db.suffix(from: hashLen))
+        let padMsg = Data(db.suffix(from: hashLen))
 
         // Find message start
-        for i in 0..<db.count {
-            let b = db[i]
+        for i in 0..<padMsg.count {
+            let b = padMsg[i]
             switch b {
             case 0x0:
                 // skip pad
@@ -145,7 +145,7 @@ public class RsaOAEPPadding {
 
             case 0x1:
                 // found
-                return db.suffix(from: i + 1)
+                return padMsg.suffix(from: i + 1)
 
             default:
                 // ERROR!
